@@ -1,0 +1,56 @@
+/* 親要素と小要素の関係をまず考える！、
+小要素のblank2は、中央揃えにして、大きさは全体の半分の長さかな〜みたいな感じ！ */
+.blank1{
+display: flex;
+justify-content: center;
+align-items: center;
+}
+.blank2{
+text-align: center;
+width: 70%;
+color: rgb(68, 63, 62);
+background: #c1e3ff;
+border-radius: 9px;
+margin: 20px 5px;
+padding: 20px 40px;
+}
+/* ここから下は、こだわりポイント！
+どこの aタグなのかわからんから、.class名スペースaとする */
+.blank2 a{
+color:#ffffff;
+}
+.field label {
+font-weight: 100;
+font-size: 15px;
+}
+/* 場合に応じて入力する場所の大きさ変えたいよね！その場合は、.class名スペースinputで差別化する！
+passwardの枠だけでかくしたかったらどうしたらいいかな？？ */
+/* input要素は入力フォームについて変更を加えたい時に使うよ！ */
+.field input[type="email"] {
+border-style: none;
+width: 200px;
+height: 30px;
+background: #ffffff;
+border-radius: 10px;
+border: 1px #dfddfb solid;
+}
+.field input[type="password"] {
+border-style: none;
+width: 200px;
+height: 30px;
+background: #ffffff;
+border-radius: 10px;
+border: 1px #cdcaff solid;
+}
+.actions input[type="submit"] {
+border-style: none;
+width: 150px;
+height: 30px;
+background: #f880a4;
+border-radius: 10px;
+border-style: none;
+}
+/* .actions input[type="submit"]:hover {
+cursor: pointer;
+background: linear-gradient(to bottom,#1c94ea,#5ba2f4f3);
+} */
