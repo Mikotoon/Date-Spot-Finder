@@ -1,0 +1,369 @@
+/* ===== 全体 ===== */
+body {
+  font-family: "Yu Gothic", "Hiragino Sans", sans-serif;
+  background-color: #fff0f5; /* 淡いピンク（ラベンダーブラッシュ系） */
+  color: #4a4a4a;
+}
+
+/* ===== コンテナ ===== */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  margin-top: 69px;
+}
+
+
+.btn-edit {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: linear-gradient(135deg, #ffe0ec, #ffcce0); /* 淡めグラデーション */
+  padding: 10px 20px;
+  border-radius: 24px;
+  font-weight: 500;
+  color: white;
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+.btn-edit:hover {
+  transform: translateY(-2px);
+}
+/* ===== ユーザー情報カード ===== */
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  padding: 36px 40px;
+  background: #ffffff;
+  border-radius: 28px;
+  box-shadow: 0 16px 32px rgba(255, 182, 193, 0.15);
+  margin-bottom: 50px;
+  position: relative;
+}
+.user-info::before {
+  content: "";
+  position: absolute;
+  top: -20px;
+  right: -20px;
+  width: 80px;
+  height: 80px;
+  background: #ffe6ef;
+  border-radius: 50%;
+  z-index: 0;
+}
+.user-info * {
+  position: relative;
+  z-index: 1;
+}
+.user-info::before,
+.user-info::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  z-index: 0;
+  filter: blur(0.5px);
+}
+
+.user-info::before {
+  width: 80px;
+  height: 80px;
+  top: -40px;
+  left: -40px;
+  background: rgba(255, 214, 228, 0.7); /* 淡ピンク */
+}
+
+.user-info::after {
+  width: 120px;
+  height: 120px;
+  bottom: -30px;
+  right: -30px;
+  background: rgba(255, 230, 239, 0.9); /* さらに淡い */
+}
+.user-info .bubble {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255, 214, 228, 0.5);
+  top: 20px;
+  right: 80px;
+  z-index: 0;
+}
+
+/* 中身を前に */
+.user-info * {
+  position: relative;
+  z-index: 1;
+}
+
+.user-info * {
+  position: relative;
+  z-index: 1;
+}
+.user-info {
+  background-color: #fff;
+  background-image:
+    radial-gradient(#ffe3ec 1.5px, transparent 1px);
+  background-size: 14px 14px;
+}
+
+/* ===== プロフ画像 ===== */
+.user-image img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid #ffe0ec;
+  background-color: #fff;
+}
+
+/* ===== テキストエリア ===== */
+.user-text h1 {
+  font-size: 30px;
+  font-weight: 700;
+  color: #e98fa8; /* 落ち着いたピンク */
+  margin-bottom: 14px;
+}
+
+.user-text p {
+  font-size: 15px;
+  color: #555;
+  margin: 6px 0;
+}
+
+/* ラベルっぽく */
+.user-text p strong {
+  color: #b96a83;
+  margin-right: 6px;
+}
+
+/* ===== 編集ボタン ===== */
+.btn-edit {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 14px;
+  padding: 8px 18px;
+  border-radius: 20px;
+  background-color: #f3b6c8;
+  color: #fff;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.btn-edit:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(243, 182, 200, 0.4);
+}
+
+/* ===== セクション見出し ===== */
+.show-section-title {
+  font-size: 20px;
+  font-weight: 700;
+  padding-bottom: 8px;
+  margin-bottom: 20px;
+}
+
+.show-section-title .en {
+  font-size: 14px;
+  color: #ffb6c1;
+  margin-right: 8px;
+  text-transform: uppercase;
+}
+.show-section-title::after {
+  content: "";
+  display: block;
+  width: 60px;
+  height: 1px;
+  background: #ffcce0;
+  margin: 40px auto 15px;
+}
+/* ===== カード ===== */
+.tweet-box {
+  background: #ffffff; /* カードは白 */
+  padding: 20px;
+  border-radius: 24px;
+  box-shadow: 0 12px 24px rgba(247, 168, 180, 0.289); /* さらに淡い影 */
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.tweet-box:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 40px rgba(255,182,193,0.08);
+}
+
+.tweet-title {
+  font-weight: 600;
+  font-size: 18px;
+  margin-bottom: 12px;
+  color: #ff7fa6; /* タイトルも淡ピンク系 */
+}
+
+.tweet-img {
+  width: 100%;
+  border-radius: 16px;
+  margin-bottom: 12px;
+  object-fit: cover;
+}
+
+/* ===== 情報ブロック ===== */
+.tweet-info-block {
+  background-color: #fff5f9; /* カード内も淡いピンク */
+  padding: 10px 14px;
+  border-radius: 16px;
+  margin-bottom: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.tweet-info, .tweet-user {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  color: #555;
+}
+
+.tweet-info i, .tweet-user i {
+  color: #ffb6c1; /* アイコンも淡ピンク */
+}
+
+/* ===== ボタン ===== */
+.btn-detail, .btn-back {
+  display: inline-flex;
+  align-items: center;
+  height: 36px;
+  padding: 0 16px;
+  border-radius: 24px;
+  background-color: #f3b6c8; /* くすみピンク */
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.btn-detail:hover {
+  background-color: #eaa3ba;
+  transform: translateY(-1px);
+}
+.btn-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: linear-gradient(135deg, #ffe0ec, #ffcce0); /* 淡めグラデーション */
+  padding: 10px 20px;
+  border-radius: 24px;
+  font-weight: 500;
+  color: white;
+  text-decoration: none;
+  transition: 0.3s;
+}
+/* ===== グリッド表示（カードを整列） ===== */
+.favorites-list, .user-tweets .favorites-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  margin-bottom: 40px;
+}
+
+/* ===== お気に入りなし表示 ===== */
+.no-favorites {
+  color: #aaa;
+  font-style: italic;
+}
+
+/* ===== タイトルを中央揃え ===== */
+.tweet-title.text-center {
+  text-align: center;
+}
+
+/* ===== ボタン＋星アイコンを中央揃え ===== */
+.tweet-actions-center {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 8px;
+}
+
+/* ===== 投稿一覧見出し ===== */
+.user-tweets .show-header {
+  text-align: center; /* 中央揃え */
+  margin-bottom: 60px; /* カードとの間隔 */
+}
+
+/* ===== その他の見出し（左寄せでOK） ===== */
+.show-header {
+  margin-bottom: 20px;
+}
+
+.tweet-actions-center {
+  display: flex;
+  align-items: center;
+}
+.btn-detail {
+  display: inline-flex;
+  align-items: center;
+  height: 34px;
+  padding:  16px;
+  border-radius: 24px;
+}
+
+/* ===== スクロールでふわっと出るカード ===== */
+@keyframes fadeUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+/* 共通 */
+.tweet-box {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+/* 下にあるカード：スクロール */
+.user-tweets .tweet-box {
+  animation: fadeUp 0.8s ease forwards;
+  animation-timeline: view();
+  animation-range: entry 0% entry 40%;
+}
+
+/* 上にあるお気に入り：ロード時 */
+.favorites .tweet-box {
+  animation: fadeUp 0.8s ease forwards;
+}
+.favorites .tweet-box {
+  animation-delay: calc(var(--i) * 0.08s);
+}
+/* ===== ユーザー情報：ふんわり表示 ===== */
+.user-info {
+  opacity: 0;
+  transform: translateY(30px);
+  animation: fadeUp 1s ease forwards;
+}
+
+/* アニメーション定義 */
+@keyframes fadeUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+/* ===== カード初期状態 ===== */
+.tweet-box {
+  opacity: 0;
+  transform: translateY(40px);
+  animation: fadeUp 0.9s ease forwards;
+}
+
+/* 少しずつ遅らせる（順番に出る風） */
+.tweet-box:nth-child(1) { animation-delay: 0.3s; }
+.tweet-box:nth-child(2) { animation-delay: 0.6s; }
+.tweet-box:nth-child(3) { animation-delay: 0.9s; }
+.tweet-box:nth-child(4) { animation-delay: 1.2s; }

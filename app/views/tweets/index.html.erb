@@ -1,88 +1,281 @@
-<link rel="stylesheet" href="stylesheet/tweets_index.css">
+<link rel="stylesheet" href="/stylesheets/tweets_index.css">
 
-<h1>GeekTwitter</h1>
-<%= button_to 'ログアウト', destroy_user_session_path, method: :delete %>
-<h3>Tweet一覧</h3>
-
-<h3>投稿を検索</h3>
-<%= form_tag({controller:"tweets",action:"index"}, method: :get) do %>
-    <%= text_field_tag :search %>
-    <%= submit_tag '検索する'  %>
-<% end %>
-
-<h5>タグ検索</h5>
-<%= form_tag({controller:"tweets",action:"index"}, method: :get) do %>
-    <% Tag.all.each do |t| %>
-        <li><%= check_box :tag_ids, t.name %><%= t.name %></li>
-    <% end %>
-    <%= submit_tag '検索' %>
-<% end %>
-
-
-<%= form_tag({controller:"tweets",action:"index"}, method: :get) do %>
-    <%= text_field_tag :tag %>
-    <%= submit_tag 'タグを追加' %>
-<% end %>
-
-
-<%= link_to "新規投稿へ", new_tweet_path %>
-
-
-<% if user_signed_in? %>
-  <%= link_to "マイページへ", user_path(current_user.id) %>
-<% end %>
-
-<%= page_entries_info @tweets %>
-
-
-<div class="tweets-container">
-  <div class="tweet">
-    <% @rank_tweets.each do |t| %>
-      <%= link_to t.user.name, user_path(t.user.id) %>
-      <%= t.user.email %>
-      <%= t.body %>
-      <div>
-        <h5>星評価：
-        <span class="star-rating">
-        <span class="star-rating-front" style="width: <%= getPercent(t.star) %>%;">★★★★★</span>
-        <span class="star-rating-back">★★★★★</span>
-        </span> 
-        </h5>
+<main>
+  <!-- ▼ ヒーローエリア -->
+  <div class="hero-wrap">
+    <div class="hero">
+      <div class="hero-overlay">
+        <div class="hero-text">
+          <h1>DATE SPOT SEARCH</h1>
+          <p>思い出の場所を共有、発見しよう。</p>
+        </div>
       </div>
-      <%= t.created_at %>
-      <%= link_to "詳細へ", tweet_path(t.id) %>
-      <% if user_signed_in? && current_user.id == t.user_id %>
-      <%= link_to "編集する", edit_tweet_path(t.id) %>
-      <%= button_to "削除する", tweet_path(t.id), method: :delete %>
-      <% end %>
-
-      <% if t.user.image.attached? %>
-        <%= image_tag  t.user.image, size: '100x100'%>
-      <% end %>
-    
-
-
-      <% if t.image.attached? %>
-          <%= image_tag t.image, size: '250x200'%>
-      <% end %> 
-
-      <% if user_signed_in? %>
-          <% if current_user.already_liked?(t) %>
-              <%= link_to tweet_like_path(id: t.id, tweet_id: t.id), data: { turbo_method: :delete } do %>
-                <i class="fas fa-heart" style="color:HotPink;"></i><%= t.likes.count %>
-              <% end %>
-          <% else %>
-              <%= link_to tweet_likes_path(id: t.id, tweet_id: t.id), data: { turbo_method: :post }  do %>
-                <i class="far fa-heart" style="color:HotPink;"></i><%= t.likes.count %>
-              <% end %>
-          <% end %>
-      <% else %>
-          <i class="far fa-heart" style="color:HotPink;"></i><%= t.likes.count %>
-      <% end %>
-
-    <% end %>
+    </div>
   </div>
-  
-</div>
 
-<%= paginate @tweets %>
+  <!-- about -->
+  <section class="about-like">
+  <div class="about-text">
+    <span class="about-eyebrow">ABOUT</span>
+
+    <h2 class="about-title">
+      楽しい時間を、<br>
+      大切な人と過ごすために
+    </h2>
+
+    <p class="about-lead">
+      特別な日を過ごすための<br>
+      デートスポットを探しませんか。
+    </p>
+
+    <p class="about-description">
+      行ってよかった場所、<br>
+      思い出に残った時間を<br>
+      そっと共有する場所です。
+    </p>
+
+    <div class="about-actions">
+      <a href="#search" class="btn about-search-btn">
+        デートスポットを探す
+      </a>
+    </div>
+    <div class="about-actions">
+
+  <% if user_signed_in? %>
+    <%= link_to "＋ 新規投稿", new_tweet_path, class: "btn" %>
+  <% end %>
+    </div>
+  </div>
+
+    <div class="about-image">
+      <div class="about-image-main">
+        <img src="/assets/about_main.jpg">
+      </div>
+
+      <div class="about-image-accent"></div>
+
+      <div class="about-image-sub">
+        <img src="/assets/about_sub.jpg">
+      </div>
+    </div>
+
+</section>
+
+
+  <!-- おすすめランキング -->
+  <section class="rank-area">
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const items = document.querySelectorAll(".rank-item");
+
+        const observer = new IntersectionObserver(entries => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("is-visible");
+              observer.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.2 });
+
+        items.forEach(item => observer.observe(item));
+      });
+    </script>
+
+    <h2 class="section-title">
+      <span class="en">RANKING</span>
+      おすすめスポットランキング
+    </h2>
+
+    <div class="rank-list">
+      <% @rank_tweets.first(3).each_with_index do |t, i| %>
+        <div class="rank-item <%= i.even? ? 'left' : 'right' %>">
+
+          <div class="rank-image-wrap">
+            <div class="rank-image">
+              <% if t.image.attached? %>
+                <%= image_tag t.image %>
+              <% end %>
+            </div>
+          </div>
+
+          <div class="rank-info">
+            <span class="rank-number">
+              <%= format('%02d', i + 1) %>
+            </span>
+
+            <h3><%= t.title %></h3>
+
+            <p class="meta">
+              <%= t.place %> / ¥<%= t.price %>
+            </p>
+            <p class="meta">
+              <%= t.body %>
+            </p>
+
+
+            <div class="like-area">
+              <% if user_signed_in? %>
+                <% if current_user.already_liked?(t) %>
+                  <%= link_to tweet_like_path(id: t.id, tweet_id: t.id),
+                      data: { turbo_method: :delete },
+                      class: "like-btn" do %>
+                    <i class="fas fa-heart"></i> <%= t.likes.count %>
+                  <% end %>
+                <% else %>
+                  <%= link_to tweet_likes_path(id: t.id, tweet_id: t.id),
+                      data: { turbo_method: :post },
+                      class: "like-btn" do %>
+                    <i class="far fa-heart"></i> <%= t.likes.count %>
+                  <% end %>
+                <% end %>
+              <% else %>
+                <span class="like-btn">
+                  <i class="far fa-heart"></i> <%= t.likes.count %>
+                </span>
+              <% end %>
+            </div>
+
+            <div class="star-rating">
+              <span class="star-rating-front" style="width:<%= getPercent(t.star) %>%">★★★★★</span>
+              <span class="star-rating-back">★★★★★</span>
+            </div>
+
+            <%= link_to "詳細へ", tweet_path(t.id), class: "btn small" %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </section>
+
+  <!-- 検索エリア -->
+  <section class="search-area" id="search">
+    <h2 class="section-title">
+      <span class="en">SEARCH</span>
+      デートスポットを探す
+    </h2>
+
+    <%= form_tag tweets_path(anchor: "spot-list"), method: :get, class: "search-form" do %>
+      <%= text_field_tag :search, nil, placeholder: "キーワード検索" %>
+      <%= submit_tag '検索', class: "btn" %>
+    <% end %>
+
+    <h3 class="tag-search-title">タグから探す</h3>
+
+    <%= form_tag tweets_path(anchor: "spot-list"), method: :get, class: "tag-form" do %>
+      <div class="tag-list">
+        <% Tag.all.each do |t| %>
+          <label class="tag-chip">
+            <%= check_box :tag_ids, t.name %>
+            <span><%= t.name %></span>
+          </label>
+        <% end %>
+      </div>
+
+
+      <div class="tag-submit">
+        <%= submit_tag '絞り込む', class: "btn" %>
+      </div>
+    <% end %>
+    
+  </section>
+
+
+  <!-- 一覧 -->
+  <section class="list-area" id="spot-list">
+    <h2 class="section-title">
+      <span class="en">LIST</span>
+      スポット一覧
+    </h2>
+
+    <%= page_entries_info @tweets %>
+
+    <div class="spot-cards">
+      <% @tweets.each do |t| %>
+        <div class="card">
+          <% if t.image.attached? %>
+            <%= image_tag t.image %>
+          <% end %>
+
+          <h4><%= t.title %></h4>
+          <p><%= t.place %> / ¥<%= t.price %></p>
+
+    <div class="card-actions">
+      <div class="like-area">
+        <div class="like-group">
+          <% if user_signed_in? %>
+            <% if current_user.already_liked?(t) %>
+              <%= link_to tweet_like_path(id: t.id, tweet_id: t.id),
+                  data: { turbo_method: :delete },
+                  class: "like-btn" do %>
+                <i class="fas fa-heart"></i>
+                <%= t.likes.count %>
+              <% end %>
+            <% else %>
+              <%= link_to tweet_likes_path(id: t.id, tweet_id: t.id),
+                  data: { turbo_method: :post },
+                  class: "like-btn" do %>
+                <i class="far fa-heart"></i>
+                <%= t.likes.count %>
+              <% end %>
+            <% end %>
+          <% else %>
+            <span class="like-btn">
+              <i class="far fa-heart"></i>
+              <%= t.likes.count %>
+            </span>
+          <% end %>
+
+          <% if user_signed_in? %>
+            <%= render "favorites/favorite", tweet: t %>
+          <% end %>
+
+        </div>
+      </div>
+    </div>
+
+
+          <div class="star-rating">
+            <span class="star-rating-front" style="width:<%= getPercent(t.star) %>%">★★★★★</span>
+            <span class="star-rating-back">★★★★★</span>
+          </div>
+
+          <% if t.tags.any? %>
+            <div class="card-tags">
+              <% t.tags.each do |tag| %>
+                <span class="tag"><%= tag.name %></span>
+              <% end %>
+            </div>
+          <% end %>
+
+
+          <%= link_to "詳細へ", tweet_path(t.id), class: "btn small" %>
+        </div>
+      <% end %>
+    </div>
+
+    <%= paginate @tweets %>
+  </section>
+</main>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+  /* ===== セクション共通フェード ===== */
+  const targets = document.querySelectorAll(
+    ".about-like, .section-title, .card"
+  );
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("is-visible");
+        observer.unobserve(entry.target);
+      }
+    });
+  }, {
+    threshold: 0.2
+  });
+
+  targets.forEach(el => observer.observe(el));
+});
+</script>

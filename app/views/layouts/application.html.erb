@@ -1,25 +1,48 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= content_for(:title) || "Geektwitter2" %></title>
+
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="apple-mobile-web-app-capable" content="yes">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
     <script src="https://kit.fontawesome.com/51111fbef6.js" crossorigin="anonymous"></script>
-    
-    <%= yield :head %>
-
-    <link rel="manifest" href="/manifest.json">
-    <link rel="icon" href="/icon.png" type="image/png">
-    <link rel="icon" href="/icon.svg" type="image/svg+xml">
-    <link rel="apple-touch-icon" href="/icon.png">
-    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
-    <%= javascript_importmap_tags %>
+    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%#= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
 
   <body>
-    <%= yield %>
+    <header class="site-header">
+      <div class="header-inner">
+        <h1 class="logo">
+          <%= link_to "DateSearch", tweets_path %>
+        </h1>
+
+        <nav class="header-nav">
+          <%= link_to tweets_path(anchor: "search"), class: "nav-link icon-link" do %>
+            <i class="fa-solid fa-magnifying-glass"></i>
+          <% end %>
+
+          <% if user_signed_in? %>
+            <%= link_to "マイページ", user_path(current_user.id), class: "nav-link" %>
+            <%= button_to "ログアウト",
+                destroy_user_session_path,
+                method: :delete,
+                class: "nav-link logout-btn",
+                form: { class: "logout-form" } %>
+          <% else %>
+            <%= link_to "ログイン", new_user_session_path, class: "nav-link" %>
+            <%= link_to "新規登録", new_user_registration_path, class: "btn nav-btn" %>
+          <% end %>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <%= yield %>
+    </main>
+    <footer class="site-footer">
+      <p>© 2025 DateSearch</p>
+    </footer>
   </body>
 </html>

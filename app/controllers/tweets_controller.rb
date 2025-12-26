@@ -61,6 +61,6 @@ before_action :authenticate_user!
 
   private
   def tweet_params
-    params.require(:tweet).permit(:body, :image, :star, tag_ids: [])
+    params.require(:tweet).permit(:body, :image, :star, :title, :price, :place, :time, :map, tag_ids: [])
   end
 end

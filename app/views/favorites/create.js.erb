@@ -1,0 +1,8 @@
+<!-- favorite#createの動き -->
+$('#favorite_<%= @tweet.id %>').html("<%= j(render partial: 'favorites/favorite', locals: { tweet @tweet }) %>");
+
+<%= form_with(
+    url: tweet_favorites_path(tweet),
+    method: :post,
+    data: { turbo: false, remote: true }
+    ) do %>

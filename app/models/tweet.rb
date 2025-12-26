@@ -8,4 +8,7 @@ class Tweet < ApplicationRecord
 
   has_many :tweet_tag_relations, dependent: :destroy
   has_many :tags, through: :tweet_tag_relations, dependent: :destroy
+
+  has_many :favorites, dependent: :destroy
+  has_many :users, through: :favorites
 end

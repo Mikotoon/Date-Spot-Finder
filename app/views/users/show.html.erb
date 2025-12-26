@@ -1,26 +1,107 @@
-<h1>users#show</h1>
-<p>名前 : <%= @user.name %></p>
-<p>メールアドレス : <%= @user.email %></p>
-<p>プロフィール : <%= @user.profile %></p>
+<div class="container">
+  <!-- ユーザー情報 -->
+  <div class="user-info fade-user">
+    <div class="user-image">
+      <% if @user.image.attached? %>
+        <%= image_tag @user.image, size: '120x120' %>
+      <% else %>
+        <%= image_tag "default_user.png", size: '120x120' %>
+      <% end %>
+    </div>
 
-<% if @user.image.attached? %>
-     <%= image_tag  @user.image, size: '250x200'%>
-<% end %>
+    <div class="user-text">
+      <h1><%= @user.name %> 's Mypage</h1>
+      <p><strong>名前:</strong> <%= @user.name %></p>
+      <p><strong>メールアドレス:</strong> <%= @user.email %></p>
+      <p><strong>プロフィール:</strong> <%= @user.profile %></p>
+      <% if current_user.id == @user.id %>
+        <%= link_to edit_user_registration_path, class: "btn-edit" do %>
+          <i class="fas fa-edit"></i> 編集する
+        <% end %>
+      <% end %>
+    </div>
+  </div>
 
-<% if current_user.id == @user.id %>
-  <%= link_to "編集する", edit_user_registration_path %>
-<% end %>
+  <!-- お気に入りリスト -->
+  <div class="favorites">
+    <section class="show-header">
+      <h2 class="section-title show-section-title">
+        <span class="en">FAVORITE</span> お気に入りリスト
+      </h2>
+    </section>
 
-<h2>ユーザーの投稿一覧</h2>
-<% @user.tweets.each do |t| %>
-  <%= t.user.name %>
-  <%= t.body %>
-<% end %>
+    <% if @favorites_list.present? %>
+      <div class="favorites-list">
+        <% @favorites_list.each do |tweet| %>
 
-<h2>ユーザーがいいねした投稿一覧</h2>
-<% @user.liked_tweets.each do |t| %>
-  <%= t.user.name %>
-  <%= t.body %>
-<% end %>
+<div class="tweet-box">
+  <!-- タイトルだけ中央揃え -->
+  <p class="tweet-title text-center"><%= tweet.title %></p>
 
-<%= link_to "Tweet一覧に戻る", tweets_path %>
+  <!-- 画像や情報ブロックは左寄せ -->
+  <% if tweet.image.attached? %>
+    <%= image_tag tweet.image, size: '250x200', class: "tweet-img" %>
+  <% end %>
+
+  <div class="tweet-info-block">
+    <p class="tweet-info"><i class="fas fa-map-marker-alt"></i> <%= tweet.place %></p>
+    <p class="tweet-info"><i class="fas fa-yen-sign"></i> ¥<%= tweet.price %></p>
+    <p class="tweet-user"><i class="fas fa-user"></i> <%= tweet.user.name %></p>
+  </div>
+
+  <!-- ボタン＋星アイコンだけ中央揃え -->
+  <div class="tweet-actions-center">
+    <%= link_to "詳細", tweet_path(tweet.id), class: "btn-detail" %>
+    <%= render "favorites/favorite", tweet: tweet %> <!-- 星アイコン -->
+  </div>
+</div>
+
+
+        <% end %>
+      </div>
+    <% else %>
+      <p class="no-favorites">お気に入りはありません</p>
+    <% end %>
+  </div>
+
+<!-- 投稿一覧 -->
+<div class="user-tweets">
+  <!-- 見出し：カードブロックの上部 -->
+  <div class="show-header">
+    <h2 class="section-title show-section-title">
+      <span class="en">LIST</span> 投稿一覧
+    </h2>
+  </div>
+
+  <!-- カードブロック（見出しの下にくる） -->
+  <div class="favorites-list"> <!-- グリッド用クラスそのまま流用 -->
+    <% @user.tweets.each do |t| %>
+      <div class="tweet-box">
+        <!-- タイトル中央揃え -->
+        <p class="tweet-title text-center"><%= t.title %></p>
+
+        <!-- 画像 -->
+        <% if t.image.attached? %>
+          <%= image_tag t.image, size: '250x200', class: "tweet-img" %>
+        <% end %>
+
+        <!-- 情報ブロック -->
+        <div class="tweet-info-block">
+          <p class="tweet-info"><i class="fas fa-map-marker-alt"></i> <%= t.place %></p>
+          <p class="tweet-info"><i class="fas fa-yen-sign"></i> <%= t.price %></p>
+          <p class="tweet-user"><i class="fas fa-user"></i> <%= t.user.name %></p>
+        </div>
+
+        <!-- 詳細ボタン＋星アイコン中央揃え -->
+        <div class="tweet-actions-center">
+          <%= link_to "詳細", tweet_path(t.id), class: "btn-detail" %>
+          <%= render "favorites/favorite", tweet: t %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+
+  <%= link_to "一覧に戻る", tweets_path, class: "btn-back" %>
+</div>

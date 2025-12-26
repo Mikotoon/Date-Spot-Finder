@@ -15,8 +15,10 @@ class User < ApplicationRecord
   validates :profile, length: { maximum: 200 } # 追記
 
 
-
   def already_liked?(tweet)
     self.likes.exists?(tweet_id: tweet.id)
   end
+
+  has_many :favorites, dependent: :destroy
+  has_many :favorite_tweets, through: :favorites, source: :tweet
 end

@@ -13,10 +13,13 @@ Rails.application.routes.draw do
 
   get "hello/index" => "hello#index"
   get "hello/link" => "hello#link"
-  root "hello#index"
+  get 'tweets/:tweet_id/likes' => 'likes#create'
+  get 'tweets/:tweet_id/likes/:id' => 'likes#destroy'
 
   resources :tweets do
     resources :likes, only: [ :create, :destroy ]
     resources :comments, only: [ :create ]
+    resources :favorites, only: [ :create, :destroy ]
   end
+  root "hello#index"
 end

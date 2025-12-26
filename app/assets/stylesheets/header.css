@@ -1,0 +1,101 @@
+/* ===== header ===== */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+
+  background: linear-gradient(
+    135deg,
+    #ffe3ea 0%,   /* ピンク少し強め */
+    #fff2f5 40%,  /* ピンク→白 */
+    #fff8e9 70%,  /* ほんのり黄（光） */
+    #ffffff 100%
+  );
+
+  backdrop-filter: blur(6px);
+  box-shadow: 0 6px 20px rgba(0,0,0,.06);
+}
+
+.header-inner {
+  margin: 0 20px;
+  max-width: none;   /* ← これ */
+  padding: 6px 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+/* ロゴ */
+.logo a {
+  font-family: "Playfair Display", serif;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  color: #222;
+  margin-right: 48px;
+}
+.logo {
+  font-size: 24px;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+/* ナビ */
+.header-nav {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+
+.header-nav a {
+  margin-left: 16px;
+  font-size: 14px;
+}
+/* 全ナビ共通 */
+.nav-link {
+  all: unset;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  color: #555;
+  cursor: pointer;
+  position: relative;
+}
+
+/* hover演出 */
+.nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -6px;
+  width: 0;
+  height: 1px;
+  background: #555;
+  transition: width 0.3s ease;
+}
+
+.nav-link:hover {
+  color: #222;
+}
+
+.nav-link:hover::after {
+  width: 100%;
+}
+
+/* ボタン（header用） */
+.header .btn {
+  color: white;
+  padding: 6px 14px;
+  border-radius: 20px;
+}
+/* button_to 対策 */
+.logout-form {
+  margin: 0;
+}
+.icon-link i {
+  font-size: 13px;
+  color: #555;
+}
+.icon-link:hover i {
+  transform: scale(1.1);
+}

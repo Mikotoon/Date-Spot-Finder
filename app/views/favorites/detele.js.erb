@@ -1,0 +1,9 @@
+<!-- favorite#deleteの動き -->
+$('#favorite_<%= @tweet.id %>').html("<%= j(render partial: 'favorites/favorite', locals: { tweet: @tweet }) %>");
+
+
+<%= form_with(
+    url: tweet_favorite_path(tweet, favorite),
+    method: :delete,
+    data: { turbo: false, remote: true }
+    ) do %>

@@ -1,55 +1,163 @@
-<h1>GeekTwitter</h1>
-<h3>Tweet詳細</h3>
+<%= stylesheet_link_tag "tweets_show", "data-turbo-track": "reload" %>
 
-<div class="tweet">
-  <p><%= @tweet.user.email %></p>
-  <p><%= @tweet.body %></p>
-  <p><%= @tweet.created_at %></p>
+<main class="show-page">
+  <section class="show-header">
+    <h2 class="section-title show-section-title">
+      <span class="en">DETAIL</span>
+      投稿詳細
+    </h2>
+  </section>
 
+  <section class="show-card">
 
-<% if user_signed_in? %>
-     <% if current_user.already_liked?(@tweet) %>
-        <%= link_to tweet_like_path(id: @tweet.id, tweet_id: @tweet.id), data: { turbo_method: :delete } do %>
-            <i class="fas fa-heart" style="color:HotPink;"></i><%= @tweet.likes.count %>
-        <% end %>
-     <% else %>
-        <%= link_to tweet_likes_path(id: @tweet.id, tweet_id: @tweet.id), data: { turbo_method: :post }  do %>
-            <i class="far fa-heart" style="color:HotPink;"></i><%= @tweet.likes.count %>
-        <% end %>
-     <% end %>
-<% else %>
-    <i class="far fa-heart" style="color:HotPink;"></i><%= @tweet.likes.count %>
-<% end %>
-
-</div>
-
-
-<h2>いいねしたユーザー</h2>
-<% @tweet.liked_users.each do |user| %>
-  <li><%= user.email %></li>
-<% end %>
-
-  <% @comments.each do |c| %>
-    <div>
-      <%= c.user.email unless c.user.blank? %>
-      <br>
-      <%= c.content %>
-    </div>
-      <br>
-  <% end %>
-
-  <% if user_signed_in? %>
-    <%= form_with(model: [@tweet, @comment], local: true) do |f| %>
-      <%= f.text_area :content %>
-      <%= button_tag type: "submit" do %>
-        <i class="far fa-comments"></i> コメントする
-      <% end %>
+    <!-- 画像 -->
+    <% if @tweet.image.attached? %>
+      <div class="show-image">
+        <%= image_tag @tweet.image %>
+      </div>
     <% end %>
-  <% end %>
-</div>
 
-<% @tweet.tags.each do |tag| %>
-    <span><%= tag.name %></span>
-<% end %>
+    <!-- 情報 -->
+    <div class="show-info">
 
-<%= link_to "Tweet一覧に戻る", tweets_path %>
+    <h2 class="show-title"><%= @tweet.title %></h2>
+    <div class="tweet-meta">
+
+        <div class="meta-item">
+          <i class="fas fa-map-marker-alt"></i>
+          <span><%= @tweet.place %></span>
+        </div>
+
+        <div class="meta-item">
+          <i class="fas fa-yen-sign"></i>
+          <span><%= @tweet.price %></span>
+        </div>
+
+        <div class="meta-item">
+          <i class="far fa-clock"></i>
+          <span><%= @tweet.time %></span>
+        </div>
+
+        <% if @tweet.map.present? %>
+          <div class="meta-item">
+            <i class="fas fa-location-arrow"></i>
+            <span><%= @tweet.map %></span>
+          </div>
+        <% end %>
+
+      </div>
+      <!-- ▲ ここまで追加 ▲ -->
+
+      <!-- ❤️ ★ -->
+      <div class="like-area">
+        <% if user_signed_in? %>
+          <% if current_user.already_liked?(@tweet) %>
+            <%= link_to tweet_like_path(id: @tweet.id, tweet_id: @tweet.id),
+                data: { turbo_method: :delete },
+                class: "like-btn" do %>
+              <i class="fas fa-heart"></i> <%= @tweet.likes.count %>
+            <% end %>
+          <% else %>
+            <%= link_to tweet_likes_path(id: @tweet.id, tweet_id: @tweet.id),
+                data: { turbo_method: :post },
+                class: "like-btn" do %>
+              <i class="far fa-heart"></i> <%= @tweet.likes.count %>
+            <% end %>
+          <% end %>
+        <% else %>
+          <span class="like-btn">
+            <i class="far fa-heart"></i> <%= @tweet.likes.count %>
+          </span>
+        <% end %>
+
+        <div class="star-rating">
+          <span class="star-rating-front" style="width:<%= getPercent(@tweet.star) %>%">★★★★★</span>
+          <span class="star-rating-back">★★★★★</span>
+        </div>
+      </div>
+
+      <!-- 説明 -->
+      <p class="show-body">
+        <%= simple_format(@tweet.body) %>
+      </p>
+
+      <!-- タグ -->
+      <div class="show-tags">
+        <% @tweet.tags.each do |tag| %>
+          <span class="tag"><%= tag.name %></span>
+        <% end %>
+      </div>
+
+      <!-- 投稿者操作 -->
+      <% if user_signed_in? && current_user.id == @tweet.user_id %>
+        <div class="show-actions">
+          <%= link_to "編集する", edit_tweet_path(@tweet), class: "btn small" %>
+          <%= button_to "削除する",
+          tweet_path(@tweet),
+          method: :delete,
+          data: { turbo_confirm: "本当に削除しますか？" },
+          class: "btn small danger" %>
+
+        </div>
+      <% end %>
+
+    </div>
+  </section>
+
+  <!-- コメント -->
+  <section class="comment-card">
+    <h3 class="comment-title">
+      <span>COMMENTS</span>
+    </h3>
+
+    <% @comments.each do |c| %>
+      <div class="comment">
+        <div class="comment-avatar">
+          <% if c.user&.image&.attached? %>
+            <%= image_tag c.user.image %>
+          <% else %>
+            <i class="fas fa-user"></i>
+          <% end %>
+        </div>
+
+        <div class="comment-content">
+          <strong><%= c.user.name || c.user.email if c.user %></strong>
+          <p><%= c.content %></p>
+        </div>
+      </div>
+    <% end %>
+
+
+    <% if user_signed_in? %>
+      <div class="comment-form-card">
+        <div class="comment-form-header">
+          <div class="comment-avatar">
+            <% if current_user.image.attached? %>
+              <%= image_tag current_user.image %>
+            <% else %>
+              <i class="fas fa-user"></i>
+            <% end %>
+          </div>
+          <span class="comment-form-title">コメントを書く</span>
+        </div>
+
+        <%= form_with(model: [@tweet, @comment], local: true) do |f| %>
+          <div class="comment-form-body">
+            <%= f.text_area :content,
+                  placeholder: "この投稿についてどう思いましたか？",
+                  class: "comment-textarea" %>
+          </div>
+
+          <div class="comment-form-footer">
+            <%= f.submit "送信", class: "comment-submit-btn" %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </section>
+
+  <div class="back-link">
+    <%= link_to "一覧へ戻る", tweets_path, class: "btn-back" %>
+  </div>
+
+</main>
