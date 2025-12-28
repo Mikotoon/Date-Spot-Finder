@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="/stylesheets/tweets_index.css">
+<%= stylesheet_link_tag "tweets_index", "data-turbo-track": "reload" %>
 
 <main>
   <!-- ▼ ヒーローエリア -->
@@ -49,13 +49,13 @@
 
     <div class="about-image">
       <div class="about-image-main">
-        <img src="/assets/about_main.jpg">
+        <%= image_tag "about_main.jpg" %>
       </div>
 
       <div class="about-image-accent"></div>
 
       <div class="about-image-sub">
-        <img src="/assets/about_sub.jpg">
+        <%= image_tag "about_sub.jpg" %>
       </div>
     </div>
 

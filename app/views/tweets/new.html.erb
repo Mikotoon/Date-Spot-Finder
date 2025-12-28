@@ -1,5 +1,4 @@
-<link rel="stylesheet" href="stylesheet/tweets_new.css">
-
+<%= stylesheet_link_tag "tweets_new", "data-turbo-track": "reload" %>
 <h3>新規Tweet</h3>
 <%= form_for @tweet do |f| %>
   <div class="field">
