@@ -15,15 +15,17 @@ main {
   width: 100%;
   height: 70vh;
   overflow: hidden; /* 波のはみ出し防止 */
-}
-.hero::before {
   content: "";
   position: absolute;
   inset: 0;
-  background-image: url("/assets/cafe_top.jpg");
   background-size: cover;
   background-position: center;
   z-index: 0;
+
+  background-image: url("/assets/cafe_top.jpg");
+
+}
+.hero::before {
 
   /* 初期状態 */
   opacity: 0;
